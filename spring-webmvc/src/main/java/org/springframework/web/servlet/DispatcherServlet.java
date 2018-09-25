@@ -487,6 +487,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		// init method in the end of initWebApplicationContext
 		initStrategies(context);
 	}
 
@@ -495,6 +496,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		// init web component bean
 		initMultipartResolver(context);
 		initLocaleResolver(context);
 		initThemeResolver(context);
