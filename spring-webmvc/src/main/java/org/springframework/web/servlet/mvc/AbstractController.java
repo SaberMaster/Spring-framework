@@ -159,11 +159,13 @@ public abstract class AbstractController extends WebContentGenerator implements 
 			return null;
 		}
 
+		// webContentGenerator is used for control cache
 		// Delegate to WebContentGenerator for checking and preparing.
 		checkRequest(request);
 		prepareResponse(response);
 
 		// Execute handleRequestInternal in synchronized block if required.
+		// this session is sync
 		if (this.synchronizeOnSession) {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
