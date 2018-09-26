@@ -134,9 +134,11 @@ public class HandlerExecutionChain {
 			for (int i = 0; i < interceptors.length; i++) {
 				HandlerInterceptor interceptor = interceptors[i];
 				if (!interceptor.preHandle(request, response, this.handler)) {
+					// if fail trigger after completion method
 					triggerAfterCompletion(request, response, null);
 					return false;
 				}
+				// current index of interceptor
 				this.interceptorIndex = i;
 			}
 		}
