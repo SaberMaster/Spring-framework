@@ -107,9 +107,12 @@ public final class ModelFactory {
 			throws Exception {
 
 		Map<String, ?> sessionAttributes = this.sessionAttributesHandler.retrieveAttributes(request);
+		// store @SessionAttributes annotation session in model
 		container.mergeAttributes(sessionAttributes);
+		// method with @ModelAttribute annotation  add the object ref by form
 		invokeModelAttributeMethods(request, container);
 
+		// check model contain the @SessionAttribute's session, if not throw exception
 		for (String name : findSessionAttributeArguments(handlerMethod)) {
 			if (!container.containsAttribute(name)) {
 				Object value = this.sessionAttributesHandler.retrieveAttribute(request, name);
@@ -132,6 +135,7 @@ public final class ModelFactory {
 			InvocableHandlerMethod modelMethod = getNextModelMethod(container).getHandlerMethod();
 			ModelAttribute ann = modelMethod.getMethodAnnotation(ModelAttribute.class);
 			Assert.state(ann != null, "No ModelAttribute annotation");
+			// if model contain same name data, not add
 			if (container.containsAttribute(ann.name())) {
 				if (!ann.binding()) {
 					container.setBindingDisabled(ann.name());
@@ -197,9 +201,11 @@ public final class ModelFactory {
 	 */
 	public void updateModel(NativeWebRequest request, ModelAndViewContainer container) throws Exception {
 		ModelMap defaultModel = container.getDefaultModel();
+		// if the session is marked completed, remove the object related with @SessionAttributes
 		if (container.getSessionStatus().isComplete()){
 			this.sessionAttributesHandler.cleanupAttributes(request);
 		}
+		// if session is not complete, add @SessionAttributes into model
 		else {
 			this.sessionAttributesHandler.storeAttributes(request, defaultModel);
 		}
