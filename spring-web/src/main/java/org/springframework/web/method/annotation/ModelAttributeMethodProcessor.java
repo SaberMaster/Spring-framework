@@ -152,6 +152,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 				if (!mavContainer.isBindingDisabled(name)) {
 					bindRequestParameters(binder, webRequest);
 				}
+				// check the parameter with @Valid annotation
 				validateIfApplicable(binder, parameter);
 				if (binder.getBindingResult().hasErrors() && isBindExceptionRequired(binder, parameter)) {
 					throw new BindException(binder.getBindingResult());
